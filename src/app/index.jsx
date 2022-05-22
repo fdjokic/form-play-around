@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import TextField from './text-field';
 import './styles.css';
 
 const isRequired = (val) => {
@@ -13,41 +14,46 @@ const isEmail = (val) => {
   return ai > -1 && gdi > ai ? '' : 'must be an email';
 };
 
+const defaultValues = {
+  name: '',
+  email: '',
+};
+
+const defaultErrors = {
+  name: [],
+  email: [],
+};
+
 export default function App() {
-  const [value, setValue] = useState('');
-  const [error, setError] = useState([]);
-  const [focused, setFocused] = useState(false);
-  const ref = useRef(null);
-
-  const validate = (validations) => {
-    setError(validations.map((errorsFor) => errorsFor(value)));
-  };
-
+  const [values, setValues] = useState({
+    name: '',
+    email: '',
+  });
+  const [error, setError] = useState({ name: [], email: [] });
   return (
-    <div>
-      <div
-        className={`form-field ${focused ? 'is-focused' : ''} ${
-          value.length > 0 ? 'has-value' : ''
-        } `}
-      >
-        <div className='control'>
-          <label onClick={() => ref.current.focus()}>Email</label>
-          <input
-            ref={ref}
-            type='text'
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onFocus={() => setFocused(true)}
-            onBlur={() => {
-              setFocused(false);
-              validate([isRequired, isEmail]);
-            }}
-          />
-        </div>
-      </div>
-      {error.length > 0 ? (
-        <div className='has-error'>{error.join(', ')}</div>
-      ) : null}
+    <div className='container'>
+      <TextField
+        values={values.name}
+        name='name'
+        onChange={(val) => {
+          const name = val;
+          setValues((prev) => ({ ...prev, name }));
+        }}
+        validations={[isRequired]}
+        errors={error.name}
+        setError={setError}
+      />
+      <TextField
+        values={values.email}
+        name='email'
+        onChange={(val) => {
+          const email = val;
+          setValues((prev) => ({ ...prev, email }));
+        }}
+        validations={[isEmail]}
+        errors={error.email}
+        setError={setError}
+      />
     </div>
   );
 }
