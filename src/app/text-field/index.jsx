@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 
 const TextField = ({
-  value = '',
+  value,
   onChange,
   validations,
   errors,

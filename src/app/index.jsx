@@ -33,7 +33,7 @@ export default function App() {
   return (
     <div className='container'>
       <TextField
-        values={values.name}
+        value={values.name}
         name='name'
         onChange={(val) => {
           const name = val;
@@ -44,7 +44,7 @@ export default function App() {
         setError={setError}
       />
       <TextField
-        values={values.email}
+        value={values.email}
         name='email'
         onChange={(val) => {
           const email = val;
